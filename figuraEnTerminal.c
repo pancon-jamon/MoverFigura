@@ -1,13 +1,29 @@
 #include <stdio.h>
-#include <stdlib.h>
+
+#define ROWS 20
+#define COLS 40
 
 void clearScreen() {
-    system("cls"); // Utiliza "cls" en Windows
+    printf("\033[H\033[J");
 }
 
 void moveFigure(int x, int y) {
-    // Mueve el cursor a la posición especificada
     printf("\033[%d;%dH", y, x);
+}
+
+void printFigure(int x, int y) {
+    clearScreen();
+
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            if (i == y && j == x) {
+                printf("*");
+            } else {
+                printf(" ");
+            }
+        }
+        printf("\n");
+    }
 }
 
 int main() {
@@ -16,25 +32,31 @@ int main() {
     char direction;
 
     while (1) {
-        clearScreen();
-        moveFigure(x, y);
-        printf("Figura");
+        printFigure(x, y);
 
         direction = getchar();
         getchar(); // Captura el carácter de nueva línea
 
         switch (direction) {
             case 'w':
-                y--;
+                if (y > 0) {
+                    y--;
+                }
                 break;
             case 's':
-                y++;
+                if (y < ROWS - 1) {
+                    y++;
+                }
                 break;
             case 'a':
-                x--;
+                if (x > 0) {
+                    x--;
+                }
                 break;
             case 'd':
-                x++;
+                if (x < COLS - 1) {
+                    x++;
+                }
                 break;
             case 'q':
                 return 0; // Sale del programa si se presiona 'q'
